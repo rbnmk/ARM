@@ -1,0 +1,50 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnet": {
+            "type": "object",
+            "metadata": {
+                "description": "Object parameter for VNET configuration"
+            }
+        }
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+            "name": "[parameters('vnet').vnet.name]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2018-08-01",
+            "location": "[resourceGroup().location]",
+            "tags": {
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": "[parameters('vnet').vnet.addressPrefixes]"
+
+                },
+                "copy": [
+                    {
+                        "name": "subnets",
+                        "count": "[length(parameters('vnet').subnets)]",
+                        "input": {
+                            "name": "[parameters('vnet').subnets[copyIndex('subnets')].name]",
+                            "properties": {
+                                "addressPrefix": "[parameters('vnet').subnets[copyIndex('subnets')].addressPrefix]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {
+        "virtualNetworkName": {
+            "type": "string",
+            "value": "[parameters('vnet').vnet.name]"
+        }
+    },
+    "functions": [
+    ]
+}
