@@ -5,28 +5,31 @@
         "userAssignedIdentityName": {
             "type": "string",
             "metadata": {
-                "description": "description"
+                "description": "Name for the User Assigned Identity"
             }
         },
         "keyVaultName": {
             "type": "string",
             "metadata": {
-                "description": "description"
+                "description": "Name of the Key Vault"
             }
         },
         "vmName": {
             "type": "securestring",
-            "defaultValue":"ivmwerbnmkd001",
+            "defaultValue":"vmName",
             "metadata": {
-                "description": "description"
+                "description": "Name of the VM to enable Azure Disk Encryption"
+            }
+        },
+        "vmResourceGroup": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the resource group where the VM is located"
             }
         },
         "utcValue": {
             "type": "string",
             "defaultValue":"[utcNow()]"
-        },
-        "vmResourceGroup": {
-            "type": "string"
         }
     },
     "variables": {
