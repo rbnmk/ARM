@@ -1,0 +1,72 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location of the deployed resource"
+            }
+        },
+        "automationAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name for the automation account"
+            }
+        },
+        "webhookName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name for the webhook"
+            }
+        },
+        "webhookExpiryTime": {
+            "type": "string",
+            "metadata": {
+                "description": "Base expiry time for the webhook in ISO standard"
+            }
+        },
+        "webhookUri": {
+            "type": "string",
+            "metadata": {
+                "description": "This should be generated before deploying this template"
+            }
+        },
+        "runbookName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name for the associated runbook"
+            }
+        }
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('automationAccountName'), '/', parameters('webhookName'))]",
+            "type": "Microsoft.Automation/automationAccounts/webhooks",
+            "location": "[parameters('location')]",
+            "apiVersion": "2015-10-31",
+            "properties": {
+                "isEnabled": true,
+                "expiryTime": "[parameters('webhookExpiryTime')]",
+                "uri": "[parameters('webhookUri')]",
+                "parameters": {
+                },
+                "runbook": {
+                    "name": "[parameters('runbookName')]"
+                }
+
+            }
+        }
+    ],
+    "outputs": {
+        "automationAccountName": {
+            "type": "string",
+            "value": "[parameters('automationAccountName')]"
+        }
+    },
+    "functions": [
+    ]
+}

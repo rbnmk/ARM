@@ -1,0 +1,88 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location of the deployed resource"
+            }
+        },
+        "automationAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name for the automation account"
+            }
+        },
+        "runbookName": {
+            "type": "string",
+            "defaultValue": "PowerShellRunbook",
+            "metadata": {
+                "description": "Name of the Runbook"
+            }
+        },
+        "runbookDescription": {
+            "type": "string",
+            "defaultValue": "Deployed by ARM Template",
+            "metadata": {
+                "description": "Description of the Runbook"
+            }
+        },
+        "runbookType": {
+            "type": "string",
+            "defaultValue": "PowerShell",
+            "metadata": {
+                "description": "Type of the Runbook"
+            }
+        },
+        "runbookUri": {
+            "type": "string",
+            "metadata": {
+                "description": "Public URI of the Runbook (i.e. on GitHub)"
+            }
+        },
+        "logProgress": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Public URI of the Runbook (i.e. on GitHub)"
+            }
+        },
+        "logVerbose": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Public URI of the Runbook (i.e. on GitHub)"
+            }
+        }
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+            "apiVersion": "2015-10-31",
+            "type": "Microsoft.Automation/automationAccounts/runbooks",
+            "name": "[concat(parameters('automationAccountName'), '/', parameters('runbookName'))]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "description": "[parameters('runbookDescription')]",
+                "runbookType": "[parameters('runbookType')]",
+                "logProgress": "[parameters('logProgress')]",
+                "logVerbose": "[parameters('logVerbose')]",
+                "publishContentLink": {
+                    "uri": "[parameters('runbookUri')]",
+                    "version": "1.0.0.0"
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "automationAccountName": {
+            "type": "string",
+            "value": "[parameters('automationAccountName')]"
+        }
+    },
+    "functions": [
+    ]
+}

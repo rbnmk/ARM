@@ -1,0 +1,67 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]"
+        },
+        "nsgName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the NSG"
+            }
+        },
+        "securityRules": {
+            "type": "array",
+            "metadata": {
+                "description": "Security rules for the NSG"
+            }
+        }
+    },
+    "variables": {
+        "copy": [
+            {
+                "name": "securityRules",
+                "count": "[length(parameters('securityRules'))]",
+                "input": {
+                    "name": "[parameters('securityRules')[copyIndex('securityRules')].name]",
+                    "properties": {
+                        "description": "[parameters('securityRules')[copyIndex('securityRules')].description]",
+                        "priority": "[parameters('securityRules')[copyIndex('securityRules')].priority]",
+                        "protocol": "[parameters('securityRules')[copyIndex('securityRules')].protocol]",
+                        "sourcePortRange": "[if(empty(parameters('securityRules')[copyIndex('securityRules')].sourcePortRange),json('null'),parameters('securityRules')[copyIndex('securityRules')].sourcePortRange)]",
+                        "destinationPortRange": "[if(empty(parameters('securityRules')[copyIndex('securityRules')].destinationPortRange),json('null'),parameters('securityRules')[copyIndex('securityRules')].destinationPortRange)]",
+                        "sourceAddressPrefix": "[if(empty(parameters('securityRules')[copyIndex('securityRules')].sourceAddressPrefix),json('null'),parameters('securityRules')[copyIndex('securityRules')].sourceAddressPrefix)]",
+                        "destinationAddressPrefix": "[if(empty(parameters('securityRules')[copyIndex('securityRules')].destinationAddressPrefix),json('null'),parameters('securityRules')[copyIndex('securityRules')].destinationAddressPrefix)]",
+                        "access": "[parameters('securityRules')[copyIndex('securityRules')].access]",
+                        "direction": "[parameters('securityRules')[copyIndex('securityRules')].direction]",
+                        "sourcePortRanges": "[if(empty(parameters('securityRules')[copyIndex('securityRules')].sourcePortRanges),json('null'),parameters('securityRules')[copyIndex('securityRules')].sourcePortRanges)]",
+                        "destinationPortRanges": "[if(empty(parameters('securityRules')[copyIndex('securityRules')].destinationPortRanges),json('null'),parameters('securityRules')[copyIndex('securityRules')].destinationPortRanges)]",
+                        "sourceAddressPrefixes": "[if(empty(parameters('securityRules')[copyIndex('securityRules')].sourceAddressPrefixes),json('null'),parameters('securityRules')[copyIndex('securityRules')].sourceAddressPrefixes)]",
+                        "destinationAddressPrefixes": "[if(empty(parameters('securityRules')[copyIndex('securityRules')].destinationAddressPrefixes),json('null'),parameters('securityRules')[copyIndex('securityRules')].destinationAddressPrefixes)]"
+                    }
+                }
+            }
+        ]
+    },
+    "resources": [
+        {
+            "name": "[parameters('nsgName')]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2018-08-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "securityRules": "[variables('securityRules')]"
+            }
+        }
+    ],
+    "outputs": {
+        "networkSecurityGroupId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Network/networkSecurityGroups',parameters('nsgName'))]"
+        }
+    },
+    "functions": [
+    ]
+}
