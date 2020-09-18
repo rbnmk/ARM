@@ -46,14 +46,14 @@
             "type": "bool",
             "defaultValue": true,
             "metadata": {
-                "description": "Public URI of the Runbook (i.e. on GitHub)"
+                "description": ""
             }
         },
         "logVerbose": {
             "type": "bool",
             "defaultValue": true,
             "metadata": {
-                "description": "Public URI of the Runbook (i.e. on GitHub)"
+                "description": ""
             }
         }
     },

@@ -1,1 +1,1 @@
-Repo with basic ARM templates for generic usage
+# Repo with basic ARM templates for generic usage

@@ -9,7 +9,7 @@
         "vnet": {
             "type": "object",
             "metadata": {
-                "description": "description"
+                "description": "Object parameter containing all information for the VNET"
             }
         }
     },
@@ -29,7 +29,9 @@
                     "id": "[resourceId('Microsoft.Network/routeTables',parameters('vnet').vnet.subnets[copyIndex('rtId')].routeTableName)]"
                 }
             }
-        ]
+        ],
+        "privateEndpointNetworkPolicyDefault":"Enabled",
+        "privateLinkServiceNetworkPolicyDefault":"Enabled"
     },
     "resources": [
         {
@@ -54,7 +56,9 @@
                                 "networkSecurityGroup": "[if(empty(parameters('vnet').vnet.subnets[copyIndex('subnets')].nsgName),json('null'),variables('nsgId')[copyIndex('subnets')])]",
                                 "routeTable": "[if(empty(parameters('vnet').vnet.subnets[copyIndex('subnets')].routeTableName),json('null'),variables('rtId')[copyIndex('subnets')])]",
                                 "delegations": "[if(empty(parameters('vnet').vnet.subnets[copyIndex('subnets')].delegations),json('null'),parameters('vnet').vnet.subnets[copyIndex('subnets')].delegations)]",
-                                "serviceEndpoints": "[if(empty(parameters('vnet').vnet.subnets[copyIndex('subnets')].serviceEndpoints),json('null'),parameters('vnet').vnet.subnets[copyIndex('subnets')].serviceEndpoints)]"
+                                "serviceEndpoints": "[if(empty(parameters('vnet').vnet.subnets[copyIndex('subnets')].serviceEndpoints),json('null'),parameters('vnet').vnet.subnets[copyIndex('subnets')].serviceEndpoints)]",
+                                "privateEndpointNetworkPolicies": "[if(empty(parameters('vnet').vnet.subnets[copyIndex('subnets')].privateEndpointNetworkPolicies),variables('privateEndpointNetworkPolicyDefault'),parameters('vnet').vnet.subnets[copyIndex('subnets')].privateEndpointNetworkPolicies)]",
+                                "privateLinkServiceNetworkPolicies": "[if(empty(parameters('vnet').vnet.subnets[copyIndex('subnets')].privateLinkServiceNetworkPolicies),variables('privateLinkServiceNetworkPolicyDefault'),parameters('vnet').vnet.subnets[copyIndex('subnets')].privateLinkServiceNetworkPolicies)]"
                             }
                         }
                     }
@@ -64,8 +68,8 @@
     ],
     "outputs": {
         "virtualNetworkName": {
-            "type": "string",
-            "value": "[parameters('vnet').vnet.name]"
+            "type": "object",
+            "value": "[parameters('vnet')]"
         }
     },
     "functions": [
