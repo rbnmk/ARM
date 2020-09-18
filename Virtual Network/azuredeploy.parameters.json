@@ -1,0 +1,54 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vnet": {
+      "value": {
+        "vnet": {
+          "name": "mcw-vnet-d",
+          "addressPrefixes": [
+            "10.248.0.0/16"
+          ],
+          "resourceGroup": "mcw-network-d",
+          "subnets": [
+            {
+              "name": "mcw-snt-01",
+              "addressPrefix": "10.248.240.0/20",
+              "nsgName": "mcw-nsg-01",
+              "routeTableName": "",
+              "privateEndpointNetworkPolicies": "",
+              "privateLinkServiceNetworkPolicies": "",
+              "delegations": [],
+              "serviceEndpoints": [
+                {
+                  "service": "Microsoft.Storage",
+                  "locations": [
+                    "*"
+                  ]
+                },
+                {
+                  "service": "Microsoft.Sql",
+                  "locations": [
+                    "*"
+                  ]
+                },
+                {
+                  "service": "Microsoft.KeyVault",
+                  "locations": [
+                    "*"
+                  ]
+                },
+                {
+                  "service": "Microsoft.Web",
+                  "locations": [
+                    "*"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

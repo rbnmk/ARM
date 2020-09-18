@@ -1,0 +1,142 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location of the deployed resource"
+            }
+        },
+        "vmssName": {
+            "type": "string",
+            "defaultValue": "vmssunique01",
+            "metadata": {
+                "description": "Azure unique name for the VMSS"
+            }
+        },
+        "vmssSku": {
+            "type": "string",
+            "defaultValue": "Standard_A1",
+            "metadata": {
+                "description": "Sku for the VMSS"
+            }
+        },
+        "vmssInstanceCount": {
+            "type": "int",
+            "defaultValue": 2,
+            "metadata": {
+                "description": "Instances to deploy for the VMSS"
+            }
+        },
+        "vmssUpgradePolicy": {
+            "type": "string",
+            "defaultValue": "manual",
+            "metadata": {
+                "description": "Upgrade policy for the VMSS"
+            }
+        },
+        "vmssAdminUsername": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Username for the VMSS"
+            }
+        },
+        "vmssAdminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Password for the VMSS"
+            }
+        },
+        "vmssWindowsOsVersion": {
+            "type": "string",
+            "defaultValue": "2016-Datacenter",
+            "allowedValues": [
+                "2012-R2-Datacenter",
+                "2016-Datacenter",
+                "2019-Datacenter"
+            ],
+            "metadata": {
+                "description": "Windows OS for the VMSS"
+            }
+        },
+        "virtualNetworkName": {
+            "type": "string"
+        },
+        "virtualNetworkResourceGroupName": {
+            "type": "string"
+        },
+        "subnetName": {
+            "type": "string"
+        }
+
+    },
+    "functions": [],
+    "variables": {
+        "subnetId": "[resourceId(parameters('virtualNetworkResourceGroupName'),'Microsoft.Network/virtualNetworks/subnets/',parameters('virtualNetworkName'),parameters('subnetName'))]",
+        "osType": {
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "[parameters('vmssWindowsOSVersion')]",
+            "version": "latest"
+        },
+        "imageReference": "[variables('osType')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Compute/virtualMachineScaleSets",
+            "name": "[parameters('vmssName')]",
+            "location": "[parameters('location')]",
+            "apiVersion": "2017-03-30",
+            "dependsOn": [
+            ],
+            "sku": {
+                "name": "[parameters('vmssSku')]",
+                "tier": "Standard",
+                "capacity": "[parameters('vmssInstanceCount')]"
+            },
+            "properties": {
+                "overprovision": true,
+                "upgradePolicy": {
+                    "mode": "[parameters('vmssUpgradePolicy')]"
+                },
+                "virtualMachineProfile": {
+                    "storageProfile": {
+                        "osDisk": {
+                            "createOption": "FromImage",
+                            "caching": "ReadWrite"
+                        },
+                        "imageReference": "[variables('imageReference')]"
+                    },
+                    "osProfile": {
+                        "computerNamePrefix": "[parameters('vmssName')]",
+                        "adminUsername": "[parameters('vmssAdminUsername')]",
+                        "adminPassword": "[parameters('vmssAdminPassword')]"
+                    },
+                    "networkProfile": {
+                        "networkInterfaceConfigurations": [
+                            {
+                                "name": "[concat('nic-we-',parameters('vmssName'))]",
+                                "properties": {
+                                    "primary": true,
+                                    "ipConfigurations": [
+                                        {
+                                            "name": "[concat('nic-we-',parameters('vmssName'),'-ipconfig')]",
+                                            "properties": {
+                                                "subnet": {
+                                                    "id": "[variables('subnetId')]"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

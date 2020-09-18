@@ -1,0 +1,77 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]"
+        },
+        "vnet": {
+            "type": "object",
+            "metadata": {
+                "description": "Object parameter containing all information for the VNET"
+            }
+        }
+    },
+    "variables": {
+        "copy": [
+            {
+                "name": "nsgId",
+                "count": "[length(parameters('vnet').vnet.subnets)]",
+                "input": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('vnet').vnet.subnets[copyIndex('nsgId')].nsgName)]"
+                }
+            },
+            {
+                "name": "rtId",
+                "count": "[length(parameters('vnet').vnet.subnets)]",
+                "input": {
+                    "id": "[resourceId('Microsoft.Network/routeTables',parameters('vnet').vnet.subnets[copyIndex('rtId')].routeTableName)]"
+                }
+            }
+        ],
+        "privateEndpointNetworkPolicyDefault":"Enabled",
+        "privateLinkServiceNetworkPolicyDefault":"Enabled"
+    },
+    "resources": [
+        {
+            "name": "[parameters('vnet').vnet.name]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2018-08-01",
+            "location": "[parameters('location')]",
+            "tags": {
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": "[parameters('vnet').vnet.addressPrefixes]"
+                },
+                "copy": [
+                    {
+                        "name": "subnets",
+                        "count": "[length(parameters('vnet').vnet.subnets)]",
+                        "input": {
+                            "name": "[parameters('vnet').vnet.subnets[copyIndex('subnets')].name]",
+                            "properties": {
+                                "addressPrefix": "[parameters('vnet').vnet.subnets[copyIndex('subnets')].addressPrefix]",
+                                "networkSecurityGroup": "[if(empty(parameters('vnet').vnet.subnets[copyIndex('subnets')].nsgName),json('null'),variables('nsgId')[copyIndex('subnets')])]",
+                                "routeTable": "[if(empty(parameters('vnet').vnet.subnets[copyIndex('subnets')].routeTableName),json('null'),variables('rtId')[copyIndex('subnets')])]",
+                                "delegations": "[if(empty(parameters('vnet').vnet.subnets[copyIndex('subnets')].delegations),json('null'),parameters('vnet').vnet.subnets[copyIndex('subnets')].delegations)]",
+                                "serviceEndpoints": "[if(empty(parameters('vnet').vnet.subnets[copyIndex('subnets')].serviceEndpoints),json('null'),parameters('vnet').vnet.subnets[copyIndex('subnets')].serviceEndpoints)]",
+                                "privateEndpointNetworkPolicies": "[if(empty(parameters('vnet').vnet.subnets[copyIndex('subnets')].privateEndpointNetworkPolicies),variables('privateEndpointNetworkPolicyDefault'),parameters('vnet').vnet.subnets[copyIndex('subnets')].privateEndpointNetworkPolicies)]",
+                                "privateLinkServiceNetworkPolicies": "[if(empty(parameters('vnet').vnet.subnets[copyIndex('subnets')].privateLinkServiceNetworkPolicies),variables('privateLinkServiceNetworkPolicyDefault'),parameters('vnet').vnet.subnets[copyIndex('subnets')].privateLinkServiceNetworkPolicies)]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {
+        "virtualNetworkName": {
+            "type": "object",
+            "value": "[parameters('vnet')]"
+        }
+    },
+    "functions": [
+    ]
+}

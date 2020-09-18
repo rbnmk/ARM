@@ -1,0 +1,98 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "defaultValue": "[resourceGroup().location]",
+            "type": "string"
+        },
+        "storageAccountName": {
+            "type": "string"
+        },
+        "storageAccountSkuName": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_RAGRS",
+                "Standard_ZRS",
+                "Premium_LRS",
+                "Premium_ZRS",
+                "Standard_GZRS",
+                "Standard_RAGZRS"
+            ]
+        },
+        "storageAccountSkuTier": {
+            "type": "string",
+            "defaultValue": "Standard",
+            "allowedValues": [
+                "Standard",
+                "Premium"
+            ]
+        },
+        "storageAccountKind": {
+            "type": "string",
+            "defaultValue": "StorageV2",
+            "allowedValues": [
+                "Storage",
+                "StorageV2",
+                "BlobStorage",
+                "FileStorage",
+                "BlobBlobStorage"
+            ]
+        },
+        "storageAccountAllowedIPs": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Allowed IPs for accessing the Key Vault"
+            }
+        },
+        "storageAccountAllowedSubnets": {
+            "type": "array",
+            "defaultValue": [],
+            "metadata": {
+                "description": "Allowed Subnet ID's for accessing the Key Vault"
+            }
+        }
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+            "name": "[parameters('storageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "location": "[parameters('location')]",
+            "tags": {
+                "displayName": "[parameters('storageAccountName')]"
+            },
+            "sku": {
+                "name": "[parameters('storageAccountSkuName')]",
+                "tier": "[parameters('storageAccountSkuTier')]"
+            },
+            "kind": "[parameters('storageAccountKind')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "networkAcls": {
+                    "defaultAction": "Deny",
+                    "bypass": "AzureServices",
+                    "ipRules": "[parameters('storageAccountAllowedIPs')]",
+                    "virtualNetworkRules": "[parameters('storageAccountAllowedSubnets')]"
+                }
+
+            }
+        }
+    ],
+    "outputs": {
+        "StorageAccountName": {
+            "type": "string",
+            "value": "[parameters('storageAccountName')]"
+        }
+    },
+    "functions": [
+    ]
+}
