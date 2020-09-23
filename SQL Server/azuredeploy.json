@@ -16,13 +16,13 @@
             }
         },
         "sqlAdminUsername": {
-            "type": "string",
+            "type": "securestring",
             "metadata": {
                 "description": "SA Admin Username for SQL Server"
             }
         },
         "sqlAdminPassword": {
-            "type": "string",
+            "type": "securestring",
             "metadata": {
                 "description": "SA Admin Password for SQL Server"
             }
