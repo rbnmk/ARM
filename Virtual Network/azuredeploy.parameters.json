@@ -14,7 +14,7 @@
             {
               "name": "mcw-snt-01",
               "addressPrefix": "10.248.240.0/20",
-              "nsgName": "mcw-nsg-01",
+              "nsgName": "",
               "routeTableName": "",
               "privateEndpointNetworkPolicies": "",
               "privateLinkServiceNetworkPolicies": "",
