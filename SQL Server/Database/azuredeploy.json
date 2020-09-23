@@ -1,0 +1,40 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sqlServerName": {
+            "type": "string",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "sqlDatabaseName": {
+            "type": "string",
+            "metadata": {
+                "description": "SQL Database object"
+            }
+        },
+        "sqlDatabaseSku": {
+            "type": "string",
+            "metadata": {
+                "description": "SQL Database object"
+            }
+        }
+    },
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+            "name": "[concat(parameters('sqlServerName'),'/',parameters('sqlDatabaseName'))]",
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2019-06-01-preview",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "[parameters('sqldatabaseSku')]"
+            },
+            "properties": {
+            }
+        }
+    ],
+    "outputs": {}
+}
