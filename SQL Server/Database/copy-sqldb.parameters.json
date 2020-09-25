@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "destSqlServerName": {
-            "value": "sql-we-mbr-dpo-o-01"
+            "value": "DestinationSQLServerName"
         },
         "destSqlDatabaseName": {
-            "value": "datahub_"
+            "value": "DestinationSQLDatabaseName"
         },
         "sourceSqlDatabaseId": {
             "value": "SourceSqlDatabaseResourceId"
