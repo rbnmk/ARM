@@ -26,15 +26,21 @@
             "metadata": {
                 "description": "ResourceId for the source SQL Database"
             }
+        },
+        "utcValue": {
+            "type": "string",
+            "defaultValue": "[utcNow()]"
         }
     },
     "functions": [],
-    "variables": {},
+    "variables": {
+        "destSqlDatabaseName":"[concat(parameters('destSqlDatabaseName'),'_',parameters('utcValue'))]"
+    },
     "resources": [
         {
             "apiVersion": "2019-06-01-preview",
             "location": "[parameters('location')]",
-            "name": "[concat(parameters('destSqlServerName'),'/',parameters('destSqlDatabaseName'))]",
+            "name": "[concat(parameters('destSqlServerName'),'/',variables('destSqlDatabaseName'))]",
             "properties": {
                 "createMode": "Copy",
                 "sourceDatabaseId": "[parameters('sourceSqlDatabaseId')]"
