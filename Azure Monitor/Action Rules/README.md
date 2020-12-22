@@ -1,10 +1,10 @@
 # Action Rules
 
-Action rules can be used to Suppress or set additional actions for Azure Monitor alerts.
+Action rules can be used to Suppress or set [additional actions](https://github.com/rbnmk/ARM/blob/master/Azure%20Monitor/Action%20Rules/README.md#action-group-parameters) for Azure Monitor alerts.
 
 For more info see the [Microsoft Docs](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/alerts-action-rules?tabs=portal)
 
-## Suppression parameter examples
+## :point_right:Suppression parameter examples :stop_sign:	
 
 ### actionrule.json
 
@@ -55,7 +55,7 @@ This parameter file can be used to suppress alerts on a **weekly** basis that ar
 - Time between: _23:00:00 and 23:59:59 (UTC)_
 - Date between: _12/12/2020 and 12/12/2022_
 
-## Action Group parameters
+## :point_right:Action Group parameters
 
 ### parameters.always-actiongroup-vms-tst-sev01.json
 
