@@ -1,0 +1,50 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "actionruleName": {
+            "value": "Always suppress new alerts for the specified VMs"
+        },
+        "actionruleDescription": {
+            "value": "Action rule created via ARM Template"
+        },
+        "actionruleType": {
+            "value": "Suppression"
+        },
+        "actionRuleRecurrenceType": {
+            "value": "Always"
+        },
+        "actionRuleScope": {
+            "value": "Resource"
+        },
+        "actionRuleScopeValues": {
+            "value": [
+                "/subscriptions/<<<SubscriptionId>>>/resourceGroups/<<<ResourceGroupName>>>/providers/<<<ResourceProvider>>>/<<<ResourceName>>>",
+                "/subscriptions/<<<SubscriptionId>>>/resourceGroups/<<<ResourceGroupName>>>/providers/<<<ResourceProvider>>>/<<<ResourceName>>>"
+            ]
+        },
+        "actionRuleConditions": {
+            "value": {
+                "monitorCondition": {
+                    "operator": "Equals",
+                    "values": [
+                        "Fired",
+                        "Resolved"
+                    ]
+                },
+                "targetResourceType": {
+                    "operator": "Equals",
+                    "values": [
+                        "microsoft.compute/virtualmachines"
+                    ]
+                },
+                "alertContext": {
+                    "operator": "Contains",
+                    "values": [
+                        "TST"
+                    ]
+                }
+            }
+        }
+    }
+}

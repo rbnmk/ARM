@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "actionruleName": {
+            "value": "Always suppress new alerts for the virtualmachines in the specified resource group"
+        },
+        "actionruleDescription": {
+            "value": "Action rule created via ARM Template"
+        },
+        "actionruleType": {
+            "value": "Suppression"
+        },
+        "actionRuleRecurrenceType": {
+            "value": "Always"
+        },
+        "actionRuleScope": {
+            "value": "ResourceGroup"
+        },
+        "actionRuleScopeValues": {
+            "value": [
+                "/subscriptions/<<<SubscriptionId>>>/resourceGroups/<<<ResourceGroupName>>>"
+            ]
+        },
+        "actionRuleConditions": {
+            "value": {
+                "monitorCondition": {
+                    "operator": "Equals",
+                    "values": [
+                        "Fired",
+                        "Resolved"
+                    ]
+                },
+                "targetResourceType": {
+                    "operator": "Equals",
+                    "values": [
+                        "microsoft.compute/virtualmachines"
+                    ]
+                }
+            }
+        }
+    }
+}

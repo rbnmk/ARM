@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "actionruleName": {
+            "value": "Always suppress new alerts for virtualmachines containing TST"
+        },
+        "actionruleDescription": {
+            "value": "Action rule created via ARM Template"
+        },
+        "actionruleType": {
+            "value": "Suppression"
+        },
+        "actionRuleRecurrenceType": {
+            "value": "Once"
+        },
+        "actionruleStartDate": {
+            "value": "12/12/2020" // MM-dd-YYYY
+        },
+        "actionruleEndDate": {
+            "value": "12/12/2022" // MM-dd-YYYY
+        },
+        "actionruleStartTime": {
+            "value": "16:00:00" // UTC
+        },
+        "actionruleEndTime": {
+            "value": "21:00:00" // UTC
+        },
+        "actionRuleConditions": {
+            "value": {
+                "monitorCondition": {
+                    "operator": "Equals",
+                    "values": [
+                        "Fired",
+                        "Resolved"
+                    ]
+                },
+                "targetResourceType": {
+                    "operator": "Equals",
+                    "values": [
+                        "microsoft.compute/virtualmachines"
+                    ]
+                },
+                "alertContext": {
+                    "operator": "Contains",
+                    "values": [
+                        "TST"
+                    ]
+                }
+            }
+        }
+    }
+}
