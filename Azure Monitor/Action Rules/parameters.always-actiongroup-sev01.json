@@ -1,0 +1,31 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "actionruleName": {
+            "value": "Always send Sev0 alerts to action group"
+        },
+        "actionruleDescription": {
+            "value": "Action rule created via ARM Template"
+        },
+        "actionruleType": {
+            "value": "ActionGroup"
+        },
+        "actiongroupId": {
+            "value": "/subscriptions/<<<SubscriptionId>>>/resourceGroups/<<<ResourceGroupName>>>/providers/<<<ResourceProvider>>>/<<<ResourceName>>>"
+        },
+        "actionRuleRecurrenceType": {
+            "value": "Always"
+        },
+        "actionRuleConditions": {
+            "value": {
+                "Severity": {
+                    "operator": "Equals",
+                    "values": [
+                        "Sev0"
+                    ]
+                }
+            }
+        }
+    }
+}

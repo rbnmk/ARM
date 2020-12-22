@@ -1,0 +1,57 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "actionruleName": {
+            "value": "Always suppress new alerts in the weekend for VMs that contain ACC"
+        },
+        "actionruleDescription": {
+            "value": "Action rule created via ARM Template"
+        },
+        "actionruleType": {
+            "value": "Suppression"
+        },
+        "actionRuleRecurrenceType": {
+            "value": "Weekly"
+        },
+        "actionruleStartDate": {
+            "value": "12/22/2020" // MM-dd-YYYY
+        },
+        "actionruleEndDate": {
+            "value": "12/22/2022" // MM-dd-YYYY
+        },
+        "actionruleStartTime": {
+            "value": "23:00:00" // UTC
+        },
+        "actionruleEndTime": {
+            "value": "23:59:59" // UTC
+        },
+        "actionruleWeeklyRecurrence": {
+            "value": [
+                "6","5"
+            ]
+        },
+        "actionRuleConditions": {
+            "value": {
+                "monitorCondition": {
+                    "operator": "Equals",
+                    "values": [
+                        "Fired","Resolved"
+                    ]
+                },
+                "targetResourceType": {
+                    "operator": "Equals",
+                    "values": [
+                        "microsoft.compute/virtualmachines"
+                    ]
+                },
+                "alertContext": {
+                    "operator": "Contains",
+                    "values": [
+                        "ACC"
+                    ]
+                }
+            }
+        }
+    }
+}
