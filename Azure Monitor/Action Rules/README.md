@@ -2,7 +2,7 @@
 
 Action rules can be used to Suppress or set additional actions for Azure Monitor alerts.
 
-For more info see the [Microsoft Docs]<https://docs.microsoft.com/en-us/azure/azure-monitor/platform/alerts-action-rules?tabs=portal>
+For more info see the [Microsoft Docs](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/alerts-action-rules?tabs=portal)
 
 ## Suppression parameters
 
