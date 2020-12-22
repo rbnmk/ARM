@@ -4,7 +4,7 @@ Action rules can be used to Suppress or set additional actions for Azure Monitor
 
 For more info see the [Microsoft Docs](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/alerts-action-rules?tabs=portal)
 
-## Suppression parameters
+## Suppression parameter examples
 
 ### actionrule.json
 
@@ -22,14 +22,14 @@ This parameter file can be used to **always** suppress alerts that are scoped to
 
 This parameter file can be used to **always** suppress alerts that are scoped to the specified **resourcegroup** and meet the conditions below:
 
-- Monitor Condition: _Fired_
+- Monitor Condition: _Fired_ or _Resolved_
 - Resource Type: _Virtual Machines_
 
 ### parameters.always-suppress-vms-tst.json
 
 This parameter file can be used to **always** suppress alerts that are scoped to the specified **resource** and meet the conditions below:
 
-- Monitor Condition: _Fired_
+- Monitor Condition: _Fired_ or _Resolved_
 - Resource Type: _Virtual Machines_
 - Alert Context (Payload) contains: _TST_
 
@@ -37,7 +37,7 @@ This parameter file can be used to **always** suppress alerts that are scoped to
 
 This parameter file can be used to suppress alerts on a **weekly** basis that are scoped to the **subscription** and meet the conditions below:
 
-- Monitor Condition: _Fired_
+- Monitor Condition: _Fired_ or _Resolved_
 - Resource Type: _Virtual Machines_
 - Alert Context (Payload) contains: _ACC_
 - Day equals: _Friday_
@@ -48,7 +48,7 @@ This parameter file can be used to suppress alerts on a **weekly** basis that ar
 
 This parameter file can be used to suppress alerts on a **weekly** basis that are scoped to the **subscription** and meet the conditions below:
 
-- Monitor Condition: _Fired_
+- Monitor Condition: _Fired_ or _Resolved_
 - Resource Type: _Virtual Machines_
 - Alert Context (Payload) contains: _ACC_
 - Day equals: _Saturday and/or Sunday_
